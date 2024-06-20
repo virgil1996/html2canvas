@@ -79,6 +79,7 @@ import {boxShadow} from './property-descriptors/box-shadow';
 import {paintOrder} from './property-descriptors/paint-order';
 import {webkitTextStrokeColor} from './property-descriptors/webkit-text-stroke-color';
 import {webkitTextStrokeWidth} from './property-descriptors/webkit-text-stroke-width';
+import {objectFit} from './property-descriptors/object-fit';
 import {Context} from '../core/context';
 
 export class CSSParsedDeclaration {
@@ -148,6 +149,7 @@ export class CSSParsedDeclaration {
     webkitTextStrokeWidth: ReturnType<typeof webkitTextStrokeWidth.parse>;
     wordBreak: ReturnType<typeof wordBreak.parse>;
     zIndex: ReturnType<typeof zIndex.parse>;
+    objectFit: ReturnType<typeof objectFit.parse>;
 
     constructor(context: Context, declaration: CSSStyleDeclaration) {
         this.animationDuration = parse(context, duration, declaration.animationDuration);
@@ -225,6 +227,7 @@ export class CSSParsedDeclaration {
         this.webkitTextStrokeWidth = parse(context, webkitTextStrokeWidth, declaration.webkitTextStrokeWidth);
         this.wordBreak = parse(context, wordBreak, declaration.wordBreak);
         this.zIndex = parse(context, zIndex, declaration.zIndex);
+        this.objectFit = parse(context, objectFit, declaration.objectFit);
     }
 
     isVisible(): boolean {
@@ -316,6 +319,5 @@ const parse = (context: Context, descriptor: CSSPropertyDescriptor<any>, style?:
                 case 'time':
                     return time.parse(context, parser.parseComponentValue());
             }
-            break;
     }
 };

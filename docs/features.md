@@ -70,6 +70,7 @@ Below is a list of all the supported CSS properties and values.
  - word-spacing
  - word-wrap
  - z-index
+ - object-fit
 
 ## Unsupported CSS properties
 These CSS properties are **NOT** currently supported
