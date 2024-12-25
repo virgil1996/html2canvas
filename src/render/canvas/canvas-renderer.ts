@@ -45,6 +45,7 @@ import {Renderer} from '../renderer';
 import {Context} from '../../core/context';
 import {DIRECTION} from '../../css/property-descriptors/direction';
 import {OBJECT_FIT} from '../../css/property-descriptors/object-fit';
+import {parseObjectPosition} from '../../css/property-descriptors/object-position';
 
 export type RenderConfigurations = RenderOptions & {
     backgroundColor: Color | null;
@@ -287,38 +288,39 @@ export class CanvasRenderer extends Renderer {
                 dy: number = box.top,
                 dw: number = box.width,
                 dh: number = box.height;
-            const {objectFit} = container.styles;
+            const {objectFit, objectPosition} = container.styles;
+            const [positionX, positionY] = parseObjectPosition(objectPosition);
             const boxRatio = dw / dh;
             const imgRatio = sw / sh;
             if (objectFit === OBJECT_FIT.CONTAIN) {
                 if (imgRatio > boxRatio) {
                     dh = dw / imgRatio;
-                    dy += (box.height - dh) / 2;
+                    dy += (box.height - dh) * positionY;
                 } else {
                     dw = dh * imgRatio;
-                    dx += (box.width - dw) / 2;
+                    dx += (box.width - dw) * positionX;
                 }
             } else if (objectFit === OBJECT_FIT.COVER) {
                 if (imgRatio > boxRatio) {
                     sw = sh * boxRatio;
-                    sx += (intrinsicWidth - sw) / 2;
+                    sx += (intrinsicWidth - sw) * positionX;
                 } else {
                     sh = sw / boxRatio;
-                    sy += (intrinsicHeight - sh) / 2;
+                    sy += (intrinsicHeight - sh) * positionY;
                 }
             } else if (objectFit === OBJECT_FIT.NONE) {
                 if (sw > dw) {
-                    sx += (sw - dw) / 2;
+                    sx += (sw - dw) * positionX;
                     sw = dw;
                 } else {
-                    dx += (dw - sw) / 2;
+                    dx += (dw - sw) * positionX;
                     dw = sw;
                 }
                 if (sh > dh) {
-                    sy += (sh - dh) / 2;
+                    sy += (sh - dh) * positionY;
                     sh = dh;
                 } else {
-                    dy += (dh - sh) / 2;
+                    dy += (dh - sh) * positionY;
                     dh = sh;
                 }
             } else if (objectFit === OBJECT_FIT.SCALE_DOWN) {
@@ -327,24 +329,24 @@ export class CanvasRenderer extends Renderer {
                 if (containW < noneW) {
                     if (imgRatio > boxRatio) {
                         dh = dw / imgRatio;
-                        dy += (box.height - dh) / 2;
+                        dy += (box.height - dh) * positionY;
                     } else {
                         dw = dh * imgRatio;
-                        dx += (box.width - dw) / 2;
+                        dx += (box.width - dw) * positionX;
                     }
                 } else {
                     if (sw > dw) {
-                        sx += (sw - dw) / 2;
+                        sx += (sw - dw) * positionX;
                         sw = dw;
                     } else {
-                        dx += (dw - sw) / 2;
+                        dx += (dw - sw) * positionX;
                         dw = sw;
                     }
                     if (sh > dh) {
-                        sy += (sh - dh) / 2;
+                        sy += (sh - dh) * positionY;
                         sh = dh;
                     } else {
-                        dy += (dh - sh) / 2;
+                        dy += (dh - sh) * positionY;
                         dh = sh;
                     }
                 }

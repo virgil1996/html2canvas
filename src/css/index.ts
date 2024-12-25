@@ -150,6 +150,7 @@ export class CSSParsedDeclaration {
     wordBreak: ReturnType<typeof wordBreak.parse>;
     zIndex: ReturnType<typeof zIndex.parse>;
     objectFit: ReturnType<typeof objectFit.parse>;
+    objectPosition: string;
 
     constructor(context: Context, declaration: CSSStyleDeclaration) {
         this.animationDuration = parse(context, duration, declaration.animationDuration);
@@ -228,6 +229,7 @@ export class CSSParsedDeclaration {
         this.wordBreak = parse(context, wordBreak, declaration.wordBreak);
         this.zIndex = parse(context, zIndex, declaration.zIndex);
         this.objectFit = parse(context, objectFit, declaration.objectFit);
+        this.objectPosition = declaration.objectPosition;
     }
 
     isVisible(): boolean {
